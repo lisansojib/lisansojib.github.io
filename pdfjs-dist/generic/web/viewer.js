@@ -1710,6 +1710,7 @@ const PDFViewerApplication = {
 
 };
 exports.PDFViewerApplication = PDFViewerApplication;
+let callerUrl;
 let validateFileURL;
 {
   const HOSTED_VIEWER_ORIGINS = ["null", "http://mozilla.github.io", "https://mozilla.github.io", "https://lisansojib.github.io"];
@@ -1768,6 +1769,7 @@ function webViewerInitialized() {
   const appConfig = PDFViewerApplication.appConfig;
   const queryString = document.location.search.substring(1);
   const params = (0, _ui_utils.parseQueryString)(queryString);
+  callerUrl = "baseurl" in params ? params.baseurl : "";
   let file;
   file = "file" in params ? params.file : _app_options.AppOptions.get("defaultUrl");
   validateFileURL(file);
@@ -2697,9 +2699,8 @@ function webViewerKeyDown(evt) {
 
 function processImageFiles(file) {
   debugger;
-  const baseUrl = localStorage.getItem("baseUrl");
-  console.log(baseUrl);
-  const uri = baseUrl + "/imageviewer-api/file-processor/process-image";
+  console.log(callerUrl);
+  const uri = callerUrl + "/imageviewer-api/file-processor/process-image";
   console.log(uri);
   const xhr = new XMLHttpRequest();
   const fd = new FormData();
