@@ -2700,17 +2700,21 @@ function webViewerKeyDown(evt) {
 function processImageFiles(file) {
   debugger;
   console.log(callerUrl);
-  const uri = callerUrl + "/imageviewer-api/file-processor/process-image";
-  const xhr = createCORSRequest("POST", uri);
+  const url = callerUrl + "/imageviewer-api/file-processor/process-image";
+  const xhr = createCORSRequest("POST", url);
+
+  if (!xhr) {
+    throw new Error("CORS not supported");
+  }
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       debugger;
-      const url = {
+      const fileUrl = {
         url: xhr.response.url,
         originalUrl: xhr.response.fileName
       };
-      PDFViewerApplication.open(url);
+      PDFViewerApplication.open(fileUrl);
     }
   };
 
@@ -2732,6 +2736,7 @@ function createCORSRequest(method, url) {
     xhr = null;
   }
 
+  xhr.withCredentials = true;
   return xhr;
 }
 
