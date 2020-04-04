@@ -2707,6 +2707,8 @@ function processImageFiles(file) {
     throw new Error("CORS not supported");
   }
 
+  xhr.withCredentials = true;
+
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
       debugger;
@@ -2736,7 +2738,6 @@ function createCORSRequest(method, url) {
     xhr = null;
   }
 
-  xhr.withCredentials = true;
   return xhr;
 }
 
