@@ -1731,6 +1731,10 @@ let validateFileURL;
         origin,
         protocol
       } = new URL(file, window.location.href);
+
+      if (origin !== viewerOrigin && protocol !== "blob:") {
+        throw new Error("file origin does not match viewer's");
+      }
     } catch (ex) {
       const message = ex && ex.message;
       PDFViewerApplication.l10n.get("loading_error", null, "An error occurred while loading the PDF.").then(loadingErrorMessage => {
@@ -2697,11 +2701,7 @@ function processImageFiles(file) {
   debugger;
   console.log(callerUrl);
   const uri = callerUrl + "/imageviewer-api/file-processor/process-image";
-  console.log(uri);
-  const xhr = new XMLHttpRequest();
-  const fd = new FormData();
-  xhr.open("POST", uri, true);
-  xhr.responseType = "json";
+  const xhr = createCORSRequest("POST", uri);
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
@@ -2714,8 +2714,25 @@ function processImageFiles(file) {
     }
   };
 
-  fd.append("UploadImage", file);
-  xhr.send(fd);
+  const formData = new FormData();
+  formData.append("UploadImage", file);
+  xhr.send(formData);
+}
+
+function createCORSRequest(method, url) {
+  let xhr = new XMLHttpRequest();
+  xhr.responseType = "json";
+
+  if ("withCredentials" in xhr) {
+    xhr.open(method, url, true);
+  } else if (typeof XDomainRequest !== "undefined") {
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  } else {
+    xhr = null;
+  }
+
+  return xhr;
 }
 
 function convertToBoolean(str) {
