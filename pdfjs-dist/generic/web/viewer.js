@@ -1778,6 +1778,7 @@ function webViewerInitialized() {
   fileInput.className = "fileInput";
   fileInput.setAttribute("type", "file");
   fileInput.setAttribute("multiple", "multiple");
+  fileInput.setAttribute("accept", "image/*, application/pdf");
   fileInput.oncontextmenu = _ui_utils.noContextMenuHandler;
   document.body.appendChild(fileInput);
 
@@ -2698,8 +2699,6 @@ function webViewerKeyDown(evt) {
 }
 
 function processImageFiles(file) {
-  debugger;
-  console.log(callerUrl);
   const url = callerUrl + "/imageviewer-api/file-processor/process-image";
   const xhr = createCORSRequest("POST", url);
 
@@ -2711,7 +2710,6 @@ function processImageFiles(file) {
 
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
-      debugger;
       const fileUrl = {
         url: xhr.response.url,
         originalUrl: xhr.response.fileName
