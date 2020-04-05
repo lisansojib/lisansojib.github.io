@@ -1845,11 +1845,12 @@ function webViewerInitialized() {
     appConfig.toolbar.viewFind.classList.add("hidden");
   }
 
-  const viewScale = "viewscale" in params ? params.viewscale : "auto";
-  appConfig.toolbar.scaleSelect.value = viewScale;
-  const showViewScale = "showviewscale" in params ? convertToBoolean(params.showviewscale) : true;
+  debugger;
+  const defaultScaleSelect = "scaleselect" in params ? params.scaleselect : "auto";
+  (0, _ui_utils.setDefaultScaleValue)(defaultScaleSelect);
+  const showScaleSelect = "showscaleselect" in params ? convertToBoolean(params.showscaleselect) : true;
 
-  if (!showViewScale) {
+  if (!showScaleSelect) {
     appConfig.toolbar.scaleSelectContainer.classList.add("hidden");
   }
 
@@ -1874,7 +1875,7 @@ function webViewerInitialized() {
     appConfig.secondaryToolbar.pageRotateCcwButton.classList.add("hidden");
   }
 
-  const showZoomInOutButtons = "showzoominoutbuttons" in params ? convertToBoolean(params.showzoominoutbuttons) : true;
+  const showZoomInOutButtons = "showzoominzoomoutbuttons" in params ? convertToBoolean(params.showzoominoutbuttons) : true;
 
   if (!showZoomInOutButtons) {
     appConfig.toolbar.zoomIn.classList.add("hidden");
@@ -2836,10 +2837,11 @@ exports.binarySearchFirstItem = binarySearchFirstItem;
 exports.normalizeWheelEventDelta = normalizeWheelEventDelta;
 exports.waitOnEventOrTimeout = waitOnEventOrTimeout;
 exports.moveToEndOfArray = moveToEndOfArray;
+exports.setDefaultScaleValue = setDefaultScaleValue;
 exports.WaitOnType = exports.animationStarted = exports.ProgressBar = exports.EventBus = exports.NullL10n = exports.SpreadMode = exports.ScrollMode = exports.TextLayerMode = exports.RendererType = exports.PresentationModeState = exports.VERTICAL_PADDING = exports.SCROLLBAR_PADDING = exports.MAX_AUTO_SCALE = exports.UNKNOWN_SCALE = exports.MAX_SCALE = exports.MIN_SCALE = exports.DEFAULT_SCALE = exports.DEFAULT_SCALE_VALUE = exports.CSS_UNITS = exports.AutoPrintRegExp = void 0;
 const CSS_UNITS = 96.0 / 72.0;
 exports.CSS_UNITS = CSS_UNITS;
-const DEFAULT_SCALE_VALUE = "auto";
+let DEFAULT_SCALE_VALUE = "auto";
 exports.DEFAULT_SCALE_VALUE = DEFAULT_SCALE_VALUE;
 const DEFAULT_SCALE = 1.0;
 exports.DEFAULT_SCALE = DEFAULT_SCALE;
@@ -3590,6 +3592,10 @@ function moveToEndOfArray(arr, condition) {
   for (let read = 0; write < len; ++read, ++write) {
     arr[write] = moved[read];
   }
+}
+
+function setDefaultScaleValue(value) {
+  exports.DEFAULT_SCALE_VALUE = DEFAULT_SCALE_VALUE = value;
 }
 
 /***/ }),
